@@ -12,3 +12,101 @@ html, body{
 	color:var(--base-color-gray-a);
 	font-size:0.9rem;
 }
+header{
+	border-bottom:1px solid var(--base-color-gray-b);
+	padding:10px 0;
+	color:var(--base-color-gray-c);
+}
+.header{
+	display: flex;
+	justify-content: center;
+	font-size:2.5rem;
+	font-weight:700;
+	padding:30px 0;
+}
+.header span{
+	color:var(--base-color-red-a);
+}
+
+.nav{
+	padding:10px;
+	font-size:1.0rem;
+	display: flex;
+	justify-content: center;
+}
+.language, .home{
+	background-color: var(--base-color-gray-b);
+	border-radius: 10px;
+}
+.nav > article{
+	width:fit-content;
+	padding:5px 10px;
+	margin:0 10px;
+}
+.nav > article > .btn-str{
+	cursor:pointer;
+}
+.nav-btn{
+	position: relative;
+}
+.btn-str:hover{
+	color:var(--base-color-red-a);
+}
+.arrow-down{
+	position:absolute;
+	width:fit-content;
+	padding:0 5px;
+	transition: transform 0.5s ease; /* 부드러운 회전 효과 */
+	top:7px;
+}
+/* 마우스를 span:first-child에 올렸을 때 아이콘 회전 */
+.btn-str:hover + .arrow-down {
+	color:var(--base-color-red-a);
+    transform: rotate(180deg);
+}
+
+main{
+	padding-top:10px;
+}
+
+.main-banner-top{
+	display:flex;
+	justify-content:center;
+	width:fit-content;
+	margin:20px auto;
+}
+.main-banner-top article{
+	margin:0 10px;
+	border-radius:15px;
+	border:1px solid var(--base-color-gray-d);
+	height:fit-content;
+}
+.main-banner-top article img{
+	border-radius:15px;
+}
+.in-line, .out-line{
+	border-bottom:1px solid var(--base-color-gray-f);
+	border-radius:0 0 15px 15px;
+	margin:20px auto;
+	height:30px;
+}
+
+.out-line{
+	border-bottom:0;
+	border-top:1px solid var(--base-color-gray-f);
+	border-radius:15px 15px 0 0;
+}
+
+.in-line ul{
+	list-style: none;
+	display: flex;
+	justify-content: flex-end;
+	padding-right:20px;
+}
+
+.line-block-title{
+	display:flex;
+	justify-content: center;
+	font-size:2.5rem;
+	font-weight:700;
+}

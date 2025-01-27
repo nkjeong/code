@@ -2,5 +2,10 @@
 :root{
 	--base-color-black:#000000;
 	--base-color-gray-a:#404040;
+	--base-color-gray-b:#2a2a2a;
+	--base-color-gray-c:#4f4f4f;
+	--base-color-gray-d:#212121;
+	--base-color-gray-e:#272727;
+	--base-color-gray-f:#383838;
 	--base-color-red-a:#db2424;
 }
