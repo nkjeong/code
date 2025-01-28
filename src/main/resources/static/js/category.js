@@ -13,10 +13,10 @@ const getCategory = (url) => {
 	    const categoryList = document.querySelector('header section.nav');
 		let html = `
 			<article class="home" onclick="location.href='/'">
-				<span class="btn-str">HOME</span>
+				<span class="btn-str eng">HOME</span>
 			</article>
 			<article class="language" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-				<span class="btn-str">language</span>
+				<span class="btn-str eng">language</span>
 			</article>
 		`;
 	    data.forEach(category => {
