@@ -1,6 +1,29 @@
 "use strict";
 const rootURL = 'https://www.wmullyu.co.kr';
 
+window.addEventListener('scroll', () => {
+    let scroll_y = window.scrollY; // 또는 window.pageYOffset
+	if(scroll_y > 20){
+		scrollHeader(scroll_y);
+	}else{
+		zeroScrollHeader();
+	}
+});
+
+const scrollHeader = (scroll_y) => {
+	const header = document.querySelector('header');
+	const main = document.querySelector('main');
+	main.classList.add('scroll-main');
+	header.classList.add('scroll-header');
+	header.style.top = `${scroll_y}px`;
+}
+const zeroScrollHeader = () => {
+	const header = document.querySelector('header');
+	const main = document.querySelector('main');
+	header.classList.remove('scroll-header');
+	main.classList.remove('scroll-main');
+}
+
 // 요소의 크기를 가져오는 함수
 const getSize = (element) => {
     const { width, height } = element.getBoundingClientRect();

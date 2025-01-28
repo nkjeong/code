@@ -26,6 +26,8 @@ const getCategory = (url) => {
 					<span class="arrow-down">
 						<i class="bi bi-caret-down-fill"></i>
 					</span>
+					<article class="sub-menu">
+					</article>
 				</article>
 			`;
 	    });

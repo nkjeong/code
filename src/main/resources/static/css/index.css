@@ -23,6 +23,13 @@ header{
 	border-bottom:1px solid var(--base-color-gray-b);
 	padding:10px 0;
 	color:var(--base-color-gray-c);
+	z-index: 150;
+	background-color: var(--base-color-black);
+	width:100%;
+}
+.scroll-header{
+	position: absolute;
+	transition:0.5s;
 }
 .header{
 	display: flex;
@@ -71,6 +78,27 @@ header{
 .btn-str:hover{
 	color:var(--base-color-red-a);
 }
+
+.sub-menu{
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(70px); /* 초기 위치를 살짝 위로 이동 */
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  background-color: var(--base-color-black);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s; /* visibility를 마지막에 처리 */
+  border: 1px solid var(--base-color-gray-d);
+  border-radius: 10px;
+}
+
+.nav-btn:hover .sub-menu{
+  visibility: visible; /* 보이도록 설정 */
+  opacity: 1;
+  transform: translateY(0); /* 제자리로 이동 */
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0s; /* visibility 즉시 활성화 */
+}
+
 .arrow-down{
 	position:absolute;
 	width:fit-content;
@@ -86,6 +114,10 @@ header{
 
 main{
 	padding-top:30px;
+}
+
+.scroll-main {
+    margin-top: 300px;
 }
 
 .main-banner-top, .main-info-top{
