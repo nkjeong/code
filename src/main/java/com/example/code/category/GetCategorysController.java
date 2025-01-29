@@ -2,6 +2,7 @@ package com.example.code.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -12,6 +13,9 @@ public class GetCategorysController {
 
     @Autowired
     private CategoryFirstRepository categoryFirstRepository;
+    
+    @Autowired
+    private CategorySecondRepository categorySecondRepository;
 
     // 모든 카테고리 반환
     @GetMapping("/categories")
@@ -29,5 +33,10 @@ public class GetCategorysController {
         Random random = new Random();
         int randomIndex = random.nextInt(categories.size()); // 리스트 크기만큼 랜덤 인덱스 생성
         return categories.get(randomIndex); // 해당 인덱스의 카테고리 반환
+    }
+    
+    @GetMapping("/categories/{idx}/second")
+    public List<CategorySecond> getSecondCategories(@PathVariable String idx) {
+        return categorySecondRepository.findByCategoryFirstIdx(idx);
     }
 }

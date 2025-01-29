@@ -68,6 +68,14 @@
 		      spaceBetween: 16,
 		      speed: 600,
 		    });
+		    
+		    {{#categoryIdx}}
+		    	const getCategoryItems = (idx) => {
+		    		const categoryGoodsItems = document.querySelector('.category-goods');
+		    		getItems(`/category-items?idx=${idx}`, categoryGoodsItems);
+		    	}
+		    	getCategoryItems("{{ categoryIdx }}");
+		    {{/categoryIdx}}
 		</script>
 	</body>
 </html>

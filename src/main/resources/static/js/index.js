@@ -26,8 +26,10 @@ const zeroScrollHeader = () => {
 
 // 요소의 크기를 가져오는 함수
 const getSize = (element) => {
-    const { width, height } = element.getBoundingClientRect();
-    return { width, height };
+	if(element){
+		const { width, height } = element.getBoundingClientRect();
+		return { width, height };
+	}
 };
 
 // 요소들의 너비를 지정하는 함수
@@ -39,22 +41,28 @@ const setElementWidths = (elements, width) => {
 
 // 특정 요소의 너비를 기반으로 여러 다른 요소들의 너비를 설정하는 함수
 const lineDecoration = (sourceElement, targetSelector) => {
-    const { width } = getSize(sourceElement); // sourceElement 크기 가져오기
-    const targetElements = document.querySelectorAll(targetSelector);
-    setElementWidths(targetElements, width);
+	if(sourceElement && targetSelector){
+		const { width } = getSize(sourceElement); // sourceElement 크기 가져오기
+		const targetElements = document.querySelectorAll(targetSelector);
+		setElementWidths(targetElements, width);
+	}
 };
 
 // 배너 내부 섹션의 너비를 균등하게 설정하는 함수
 const bannerCenter = (sourceSelector, targetSelector) => {
-    const { width } = getSize(document.querySelector(sourceSelector));
-    const targetElements = document.querySelectorAll(targetSelector);
-    const elementCount = targetElements.length;
+	if(sourceSelector && targetSelector){
+		if(document.querySelector(sourceSelector)){
+			const { width } = getSize(document.querySelector(sourceSelector));
+			const targetElements = document.querySelectorAll(targetSelector);
+			const elementCount = targetElements.length;
 
-    // 각 섹션의 너비 계산 (여백 포함)
-    const elementWidth = Math.ceil(width / elementCount) - 20;
+			// 각 섹션의 너비 계산 (여백 포함)
+			const elementWidth = Math.ceil(width / elementCount) - 20;
 
-    // 계산된 너비를 적용
-    setElementWidths(targetElements, elementWidth);
+			// 계산된 너비를 적용
+			setElementWidths(targetElements, elementWidth);
+		}
+	}
 };
 
 // 실행 코드: main-banner-top을 기준으로 다양한 요소들의 크기를 설정
@@ -67,7 +75,8 @@ const mainBannerTop = document.querySelector('.main-banner-top');
     '.main-info-top',
     '.new-goods',
     '.category-random-goods',
-    '.banner-center'
+    '.banner-center',
+	'.category-goods',
 ].forEach((selector) => lineDecoration(mainBannerTop, selector));
 
 // 배너 내부 섹션에 대해 bannerCenter 실행
@@ -76,47 +85,73 @@ bannerCenter('.main-banner-top', '.banner-center > section');
 
 const getItems = async (url, element) => {
     try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-		let html = '';
-		let itemName = '';
-        data.forEach(item => {
-			if(item.itemName.length > 15){
-				itemName = item.itemName.substring(0, 15)+'...';
-			}else{
-				itemName = item.itemName;
+		if(element){
+			const response = await fetch(url);
+			if (!response.ok) {
+			    throw new Error(`HTTP error! status: ${response.status}`);
 			}
-			html += `
-				<section class="item">
-					<section data-code="${item.code}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="${item.itemName}" class="representative-image">
-						<img src="${rootURL}/images/1000/${item.manufacturingCompanyName.toLowerCase()}_${item.code}.jpg">
-						<article class="in-logo">
-							<img src="/images/source/in_logo.png">
-						</article>
+			const data = await response.json();
+			let html = '';
+			let itemName = '';
+			data.forEach(item => {
+				if(item.itemName.length > 15){
+					itemName = item.itemName.substring(0, 15)+'...';
+				}else{
+					itemName = item.itemName;
+				}
+				html += `
+					<section class="item">
+						<section data-code="${item.code}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="${item.itemName}" class="representative-image">
+							<img class="rep-image" data-src="${rootURL}/images/1000/${item.manufacturingCompanyName.toLowerCase()}_${item.code}.jpg">
+							<article class="in-logo">
+								<img src="/images/source/in_logo.png">
+							</article>
+						</section>
+						<section>
+							<article>
+								${itemName}
+							</article>
+							<article>
+								<span>${getCurrentMony(item.itemRetailPrice)}</span><span><i class="bi bi-caret-right-fill"></i></span><span class="purchase-price">${getCurrentMony(item.itemPurchasePrice)}</span><span>${getDiscountRate(item.itemRetailPrice, item.itemPurchasePrice)}%</span><span><i class="bi bi-caret-down"></i></span>
+							</article>
+						</section>
 					</section>
-					<section>
-						<article>
-							${itemName}
-						</article>
-						<article>
-							<span>${getCurrentMony(item.itemRetailPrice)}</span><span><i class="bi bi-caret-right-fill"></i></span><span class="purchase-price">${getCurrentMony(item.itemPurchasePrice)}</span><span>${getDiscountRate(item.itemRetailPrice, item.itemPurchasePrice)}%</span><span><i class="bi bi-caret-down"></i></span>
-						</article>
-					</section>
-				</section>
-			`;
-        });
-		element.innerHTML = html;
-		vanillaTiltEle(element, ".representative-image");
-		const tooltipTriggerList = element.querySelectorAll('[data-bs-toggle="tooltip"]');
-		const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+				`;
+			});
+			element.innerHTML = html;
+			showImg(element);
+			vanillaTiltEle(element, ".representative-image");
+			const tooltipTriggerList = element.querySelectorAll('[data-bs-toggle="tooltip"]');
+			const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+		}
     } catch (error) {
         console.error('Error fetching items:', error);
         element.innerHTML = `<p>Error fetching data: ${error.message}</p>`;
     }
 };
+
+
+const showImg = (ele) => {
+	const images = ele.querySelectorAll('.rep-image');
+			    const lazyLoad = (entries, observer) => {
+			        entries.forEach(entry => {
+			            if (entry.isIntersecting) {
+			                const img = entry.target;
+			                img.src = img.dataset.src; // data-src 속성의 값을 src로 설정
+			                img.classList.add('loaded'); // 로드 완료된 이미지에 클래스 추가
+			                observer.unobserve(img); // 더 이상 관찰하지 않음
+			            }
+			        });
+			    };
+			    const observer = new IntersectionObserver(lazyLoad, {
+			        root: null, // 뷰포트를 기준으로 관찰
+			        rootMargin: "0px",
+			        threshold: 0.5 // 10%만 보여도 로드 시작
+			    });
+			    images.forEach(image => {
+			        observer.observe(image); // 모든 이미지 관찰 시작
+			    });
+}
 
 // Example usage for /goods/all
 /*const allGoodsElement = document.getElementById('all-goods');
@@ -144,11 +179,15 @@ const getRandomCategory = async () => {
 getRandomCategory().then((category) => {
     if (category) {
 		const randomCategory = document.querySelector('.random-category');
-		randomCategory.innerHTML = `
-			- Category items - [<span class="kor">${category.cateName}</span>]
-		`;
+		if(randomCategory){
+			randomCategory.innerHTML = `
+				- Category items - [<span class="kor">${category.cateName}</span>]
+			`;
+		}
 		const categoryRandomGoods = document.querySelector('.category-random-goods');
-		getItems(`/goods/by-category?idx=${encodeURIComponent(category.idx)}`, categoryRandomGoods);
+		if(categoryRandomGoods){
+			getItems(`/goods/by-category?idx=${encodeURIComponent(category.idx)}`, categoryRandomGoods);
+		}
     } else {
         console.log('카테고리가 없거나 오류가 발생했습니다.');
     }
