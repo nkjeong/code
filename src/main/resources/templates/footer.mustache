@@ -70,19 +70,23 @@
 		    });
 		    
 		    {{#categoryIdx}}
-		    	const getCategoryItems = (idx) => {
-		    		const categoryGoodsItems = document.querySelector('.category-goods');
-		    		getItems(`/category-items?idx=${idx}`, categoryGoodsItems);
-		    	}
-		    	getCategoryItems("{{ categoryIdx }}");
+			    document.addEventListener("DOMContentLoaded", function () {
+			    	const getCategoryItems = (idx) => {
+			    		const categoryGoodsItems = document.querySelector('.category-goods');
+			    		getItems(`/category-items?idx=${idx}`, categoryGoodsItems);
+			    	}
+			    	getCategoryItems("{{ categoryIdx }}");
+			    }
 		    {{/categoryIdx}}
 		    
 		    {{#items}}
-		    	const getAllItems = () => {
-		    		const allItems = document.querySelector('.all-items-wrapper');
-		    		getItems(`/goods/all`, allItems);
-		    	}
-		    	getAllItems();
+			    document.addEventListener("DOMContentLoaded", function () {
+			    	const getAllItems = () => {
+			    		const allItems = document.querySelector('.all-items-wrapper');
+			    		getItems(`/goods/all`, allItems);
+			    	}
+			    	getAllItems();
+			    }
 		    {{/items}}
 		</script>
 	</body>
