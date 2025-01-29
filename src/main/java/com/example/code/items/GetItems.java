@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.sql.*;
@@ -62,6 +61,11 @@ public class GetItems {
     public String categoryItemsPage(@RequestParam(required = false) String idx, Model model) {
         model.addAttribute("categoryIdx", idx); // 선택한 카테고리 코드 전달
         return "items";
+    }
+    @GetMapping("/all")
+    public String allIteml(@RequestParam(required = false) String items, Model model) {
+    	model.addAttribute("items", items); // 선택한 카테고리 코드 전달
+        return "all-items";
     }
 
     @GetMapping("/category-items")
@@ -146,23 +150,49 @@ public class GetItems {
 
 
     @GetMapping("/goods/all")
-    @ResponseBody  // ✅ JSON 응답을 반환하도록 변경
-    public List<Goods> getAllGoods() throws SQLException {
+    @ResponseBody
+    public GoodsPage getAllGoods(@RequestParam(defaultValue = "1") int page) {
+        int pageSize = 50;  // 한 페이지당 표시할 상품 개수
+        int offset = (page - 1) * pageSize; // 페이지에 맞는 데이터 OFFSET 계산
+
         String query = "SELECT g.*, mc.nameEng AS manufacturingCompanyName " +
-                       "FROM goods g " +
-                       "LEFT JOIN manufacturingcompany mc " +
-                       "ON g.manufacturing_company_code = mc.code";
+                "FROM goods g " +
+                "LEFT JOIN manufacturingcompany mc " +
+                "ON g.manufacturing_company_code = mc.code " +
+                "LIMIT ? OFFSET ?"; // ✅ 페이징 적용 (LIMIT + OFFSET)
+
+        List<Goods> goodsList = new ArrayList<>();
+        int totalItems = 0;
+        int totalPages = 0;
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(query);
-             ResultSet resultSet = statement.executeQuery()) {
+             PreparedStatement countStatement = connection.prepareStatement("SELECT COUNT(*) FROM goods")) {
 
-            List<Goods> goodsList = new ArrayList<>();
+            // 상품 리스트 조회 (페이징 적용)
+            statement.setInt(1, pageSize);
+            statement.setInt(2, offset);
+            ResultSet resultSet = statement.executeQuery();
+
             while (resultSet.next()) {
                 goodsList.add(mapGoods(resultSet));
             }
-            return goodsList;  // ✅ JSON 반환
+
+            // 전체 상품 개수 조회
+            ResultSet countResult = countStatement.executeQuery();
+            if (countResult.next()) {
+                totalItems = countResult.getInt(1);
+            }
+
+            // 총 페이지 수 계산
+            totalPages = (int) Math.ceil((double) totalItems / pageSize);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+
+        // ✅ 페이징 정보 포함하여 반환
+        return new GoodsPage(goodsList, page, totalPages, totalItems);
     }
 
     @GetMapping("/goods/new")
@@ -243,5 +273,19 @@ public class GetItems {
         goods.recommended = resultSet.getString("recommended");
         goods.manufacturingCompanyName = resultSet.getString("manufacturingCompanyName");
         return goods;
+    }
+    
+    public static class GoodsPage {
+        public List<Goods> items;
+        public int currentPage;
+        public int totalPages;
+        public int totalItems;
+
+        public GoodsPage(List<Goods> items, int currentPage, int totalPages, int totalItems) {
+            this.items = items;
+            this.currentPage = currentPage;
+            this.totalPages = totalPages;
+            this.totalItems = totalItems;
+        }
     }
 }

@@ -27,7 +27,7 @@ const getCategory = async (url) => {
         <article class="language" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
             <span class="btn-str eng">language</span>
         </article>
-		<article class="all-items">
+		<article class="all-items" onclick="location.href='/all?items=all'">
             <span class="btn-str eng">All items</span>
         </article>
     `;

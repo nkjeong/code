@@ -235,7 +235,8 @@ main{
 
 .new-goods,
 .category-random-goods,
-.category-goods{
+.category-goods,
+.all-items-wrapper{
 	display: flex;
 	justify-content: space-between;
 	flex-wrap: wrap;
@@ -244,7 +245,8 @@ main{
 }
 .new-goods .item,
 .category-random-goods .item,
-.category-goods .item{
+.category-goods .item,
+.all-items-wrapper .item{
 	width:220px;
 	margin:10px 0;
 	border-bottom:1px solid var(--base-color-gray-d);
@@ -252,18 +254,21 @@ main{
 }
 .new-goods .item section:last-child > article,
 .category-random-goods .item section:last-child > article,
-.category-goods .item section:last-child > article{
+.category-goods .item section:last-child > article,
+.all-items-wrapper .item section:last-child > article{
 	margin:10px 0;
 	text-align: center;
 }
 .new-goods .item section:last-child > article > span,
 .category-random-goods .item section:last-child > article > span,
-.category-goods .item section:last-child > article > span{
+.category-goods .item section:last-child > article > span,
+.all-items-wrapper .item section:last-child > article > span{
 	margin:0 2px;
 }
 .new-goods .item section:last-child > article > span:first-child,
 .category-random-goods .item section:last-child > article > span:first-child,
-.category-goods .item section:last-child > article > span:first-child{
+.category-goods .item section:last-child > article > span:first-child,
+.all-items-wrapper .item section:last-child > article > span:first-child{
 	text-decoration: line-through;
 	font-size:0.9rem;
 }
@@ -296,7 +301,8 @@ main{
 
 .new-goods .item img,
 .category-random-goods .item img,
-.category-goods .item img{
+.category-goods .item img,
+.all-items-wrapper .item img{
 	width:100%;
 	border-radius:10px;
 }

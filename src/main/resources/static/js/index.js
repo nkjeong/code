@@ -77,6 +77,7 @@ const mainBannerTop = document.querySelector('.main-banner-top');
     '.category-random-goods',
     '.banner-center',
 	'.category-goods',
+	'.all-items-wrapper'
 ].forEach((selector) => lineDecoration(mainBannerTop, selector));
 
 // 배너 내부 섹션에 대해 bannerCenter 실행
