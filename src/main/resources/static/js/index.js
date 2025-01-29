@@ -103,7 +103,7 @@ const getItems = async (url, element) => {
 				html += `
 					<section class="item">
 						<section data-code="${item.code}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="${item.itemName}" class="representative-image">
-							<img class="rep-image" data-src="${rootURL}/images/1000/${item.manufacturingCompanyName.toLowerCase()}_${item.code}.jpg">
+							<img class="rep-image" data-src="${rootURL}/images/1000/${item.manufacturingCompanyName.toLowerCase()}_${item.code}.jpg" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
 							<article class="in-logo">
 								<img src="/images/source/in_logo.png">
 							</article>

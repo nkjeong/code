@@ -75,7 +75,11 @@ header{
 .nav-btn{
 	position: relative;
 }
-.btn-str:hover{
+li.loginBtn{
+	cursor:pointer;
+}
+
+.btn-str:hover, li.loginBtn:hover{
 	color:var(--base-color-red-a);
 }
 
@@ -305,6 +309,7 @@ main{
 .all-items-wrapper .item img{
 	width:100%;
 	border-radius:10px;
+	cursor:pointer;
 }
 .action-banner{
 	margin:50px 0;
@@ -369,4 +374,7 @@ footer > section > section:not(:first-child) > article:last-child{
 }
 footer > section > section:not(:first-child) > article:not(:first-child){
 	padding:10px 0 0 15px;
+}
+.offcanvas.offcanvas-end{
+	width:700px;
 }
