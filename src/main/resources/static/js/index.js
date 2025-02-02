@@ -416,6 +416,7 @@ const vanillaTiltEle = (ele, cls) => {
 	});
 }
 
+//상세설명 offcanvas
 const setOffcanvas = () => {
 	const offcanvasElement = document.getElementById("offcanvasRight");
 
@@ -484,3 +485,23 @@ const setOffcanvas = () => {
 	});
 }
 setOffcanvas();
+
+
+const brandModalElement = document.getElementById("brandModal");
+brandModalElement.addEventListener("shown.bs.modal", (event) => {
+	getBrands();
+});
+
+
+const getBrands = async () => {
+    try {
+        const response = await fetch('/brands/all'); // ✅ 서버 API 호출
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const brands = await response.json();
+        console.log(brands); // ✅ 데이터 출력
+    } catch (error) {
+        console.error("Error fetching brands:", error);
+    }
+};

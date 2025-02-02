@@ -439,7 +439,7 @@ header > section.pagination-wrapper{
 	width:700px;
 	background-color: var(--base-color-black);
 	border-left: 1px solid var(--base-color-gray-b);
-	color: var(--base-color-gray-a);
+	color: var(--base-color-gray-h);
 }
 .offcanvas.offcanvas-end .offcanvas-header{
 	border-bottom: 1px solid var(--base-color-gray-d);
