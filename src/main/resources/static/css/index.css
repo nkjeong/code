@@ -23,7 +23,7 @@ header{
 	border-bottom:1px solid var(--base-color-gray-b);
 	padding:10px 0;
 	color:var(--base-color-gray-c);
-	z-index: 150;
+	z-index: 900;
 	background-color: var(--base-color-black);
 	width:100%;
 }
@@ -60,7 +60,7 @@ header{
 	display: flex;
 	justify-content: center;
 }
-.language, .home, .all-items{
+.language, .home, .all-items, .admin, .brand-items{
 	background-color: var(--base-color-gray-b);
 	border-radius: 10px;
 }
@@ -75,11 +75,24 @@ header{
 .nav-btn{
 	position: relative;
 }
-li.loginBtn{
+li.loginBtn, li.logoutBtn, li.memberInfo{
+	display:flex;
 	cursor:pointer;
 }
+.btn-str{
+	cursor: pointer;
+}
 
-.btn-str:hover, li.loginBtn:hover{
+span.btn-str:hover{
+	color:var(--base-color-red-a);
+}
+
+article.btn-str:hover{
+	color:var(--base-color-white);
+	background-color: var(--base-color-gray-h);
+}
+
+li.loginBtn:hover, li.logoutBtn:hover, li.memberInfo:hover{
 	color:var(--base-color-red-a);
 }
 
@@ -97,6 +110,7 @@ li.loginBtn{
   border-radius: 10px;
   padding: 10px;
   box-shadow: 10px 10px 10px rgba(0,0,0,0.5);
+  z-index: 1000;
 }
 .sub-menu ul{
 	list-style: none;
@@ -138,6 +152,7 @@ li.loginBtn{
 
 main{
 	padding-top:30px;
+	position: relative;
 }
 
 .scroll-main {
@@ -206,6 +221,10 @@ main{
 	display: flex;
 	justify-content: flex-end;
 	padding-right:20px;
+}
+
+.in-line ul li{
+	margin:0 10px;
 }
 
 .banner-center{
@@ -322,6 +341,10 @@ main{
 	padding:30px 0;
 }
 
+.logo-color{
+	color:var(--base-color-orange-a);
+}
+
 .bottom-banner-01{
 	height:400px;
 	background-image: url(/images/bottom_banner_01.jpg);
@@ -375,6 +398,210 @@ footer > section > section:not(:first-child) > article:last-child{
 footer > section > section:not(:first-child) > article:not(:first-child){
 	padding:10px 0 0 15px;
 }
+section.pagination-wrapper{
+	height:50px;
+	width:100%;
+	background-color: var(--base-color-black);
+	bottom:-50px;
+	z-index: -1;
+	border-top: 1px solid var(--base-color-gray-b);
+	border-bottom: 1px solid var(--base-color-gray-b);
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
+section.pagination-wrapper > span{
+	margin:0 10px;
+	padding:3px;
+	width:30px;
+	border:1px solid var(--base-color-gray-b);
+	text-align:center;
+	cursor:pointer;
+}
+section.pagination-wrapper > span:hover{
+	color:var(--base-color-red-a);
+}
+
+header > section.pagination-wrapper{
+	position:absolute;
+}
+
+.all-items-page.pagination-wrapper{
+	margin:0 auto;
+	border-radius: 15px;
+}
+.msg{
+	padding:5.4px;
+	display:none;
+}
+
 .offcanvas.offcanvas-end{
 	width:700px;
+	background-color: var(--base-color-black);
+	border-left: 1px solid var(--base-color-gray-b);
+	color: var(--base-color-gray-a);
+}
+.offcanvas.offcanvas-end .offcanvas-header{
+	border-bottom: 1px solid var(--base-color-gray-d);
+	font-size:1.2rem;
+}
+.offcanvas.offcanvas-end .item-representative{
+	height:300px;
+	border-bottom: 1px solid var(--base-color-gray-d);
+	padding: var(--bs-offcanvas-padding-y) var(--bs-offcanvas-padding-x);
+	display: flex;
+}
+
+.offcanvas.offcanvas-end .item-representative > section:first-child{
+	width:260px;
+	height:100%;
+}
+.offcanvas.offcanvas-end .item-representative > section:first-child img{
+	width:100%;
+	border-radius: 15px;
+}
+.offcanvas.offcanvas-end .item-representative > section:last-child{
+	flex:1;
+	height:100%;
+	display: flex;
+	flex-direction: column;
+	padding:0 0 0 10px;
+}
+.offcanvas.offcanvas-end .item-representative > section:last-child article{
+	display: flex;
+	width:100%;
+}
+.offcanvas.offcanvas-end .item-representative > section:last-child article div{
+	padding:5px;
+}
+.offcanvas.offcanvas-end .item-representative > section:last-child article div:first-child{
+	width:100px;
+}
+.offcanvas.offcanvas-end .item-representative > section:last-child article div:last-child{
+	flex:1;
+}
+.offcanvas.offcanvas-end .item-representative > section:last-child article:not(:last-child) > div{
+	border-bottom: 1px solid var(--base-color-gray-d);
+}
+.offcanvas.offcanvas-end .offcanvas-body{
+	overflow-y: auto;  /* ✅ 내용이 많으면 스크롤 가능 */
+    scrollbar-width: none; /* ✅ Firefox 스크롤바 숨김 */
+}
+.offcanvas.offcanvas-end .offcanvas-body::-webkit-scrollbar{
+	display: none;
+}
+.offcanvas.offcanvas-end .offcanvas-body img{
+	width:100%;
+	border-radius: 15px;
+}
+
+.offcanvas.offcanvas-top{
+	height:150px;
+	background-color: var(--base-color-black);
+	border-bottom: 1px solid var(--base-color-gray-b);
+	color: var(--base-color-gray-a);
+}
+
+.search-items-wrapper{
+	top:0;
+	position:absolute;
+	background-color:var(--base-color-black);
+	border-bottom: 1px solid var(--base-color-gray-b);
+	color: var(--base-color-gray-a);
+	height:fit-content;
+	width:100%;
+	padding:30px;
+	display: none;
+	flex-direction: column;
+	padding-bottom:0;
+	z-index: 890;
+}
+.search-items-wrapper-close{
+	width:100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid var(--base-color-gray-d);
+}
+.search-items-wrapper-close article{
+	width:350px;
+}
+.search-items-wrapper-close article.search-title{
+	display:flex;
+	justify-content:center;
+	flex:1;
+	font-weight:700;
+	font-size:1.2rem;
+}
+.search-items-wrapper-close article:first-child{
+	padding-left:10px;
+}
+.search-items-wrapper-close article:first-child img{
+	width:50px;
+	margin:0 20px;
+}
+.search-items-wrapper-close article:last-child{
+	display: flex;
+	justify-content: flex-end;
+}
+
+.search-items-list-wrapper{
+	padding:10px 30px 0 30px;
+}
+.search-item{
+	display: flex;
+	margin:5px 0;
+	
+}
+.search-item:not(:last-child){
+	border-bottom:1px solid var(--base-color-gray-d);
+}
+.search-item article{
+	width:100px;
+	padding:5px 5px;
+	display: flex;
+	align-items: center;
+	justify-content:center;
+}
+.search-item article.item-img{
+	width:50px;
+}
+.search-item article.item-img img{
+	width:100%;
+}
+.search-item article.item-name{
+	flex:1;
+	justify-content:flex-start;
+}
+
+.search-item article:not(:last-child){
+	border-right:1px solid var(--base-color-gray-d);
+}
+article.option[data-isoption="Y"], div[data-isoption="Y"]{
+	cursor:pointer;
+}
+
+.option-value{
+	width:max-content;
+	position:absolute;
+	display: none;
+	right:25px;
+	bottom:0;
+	padding:10px;
+	background-color:var(--base-color-black);
+	border-radius: 5px;
+	border:1px solid var(--base-color-gray-d);
+	box-shadow: 10px 10px 10px rgba(0,0,0,0.5);
+}
+.option-value > div{
+	margin:0 5px;
+}
+
+.loginStatus{
+	color:var(--base-color-orange-a);
+	font-weight:700;
+}
+
+article.option:hover .option-value{
+	display:flex;
 }

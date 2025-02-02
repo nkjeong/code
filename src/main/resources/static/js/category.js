@@ -21,16 +21,27 @@ const getCategory = async (url) => {
 
     const categoryList = document.querySelector('header section.nav');
     let html = `
-        <article class="home" onclick="location.href='/'">
-            <span class="btn-str eng">HOME</span>
+        <article class="home btn-str" onclick="location.href='/'">
+            <span class="eng">HOME</span>
         </article>
-        <article class="language" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
-            <span class="btn-str eng">language</span>
+        <article class="language btn-str" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+            <span class="eng">language</span>
         </article>
-		<article class="all-items" onclick="location.href='/all?items=all'">
-            <span class="btn-str eng">All items</span>
+		<article class="all-items btn-str" onclick="location.href='/all?items=all'">
+            <span class="eng">All items</span>
         </article>
+		<article class="brand-items btn-str" data-bs-toggle="modal" data-bs-target="#brandModal">
+		    <span class="eng">BRAND</span>
+		</article>
     `;
+	
+	if(admin === 'Y'){
+		html += `
+			<article class="admin btn-str" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+	            <span class="eng">ADMINISTRATOR</span>
+	        </article>
+		`;
+	}
 
     for (const category of data) {
         html += `

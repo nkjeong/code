@@ -1,6 +1,7 @@
 package com.example.code.items;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,6 +67,93 @@ public class GetItems {
     public String allIteml(@RequestParam(required = false) String items, Model model) {
     	model.addAttribute("items", items); // 선택한 카테고리 코드 전달
         return "all-items";
+    }
+    
+    @GetMapping("/options")
+    @ResponseBody
+    public ResponseEntity<List<ItemOption>> getItemOptions(
+            @RequestParam String code,
+            @RequestParam String manufacturingcompanyCode) {
+
+        String query = "SELECT * FROM item_option WHERE code = ? AND manufacturingcompanyCode = ?";
+        List<ItemOption> options = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, code);
+            statement.setString(2, manufacturingcompanyCode);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                ItemOption option = new ItemOption();
+                option.code = resultSet.getString("code");
+                option.name = resultSet.getString("name");
+                option.optionValue = resultSet.getString("optionValue");
+                option.manufacturingcompanyCode = resultSet.getString("manufacturingcompanyCode");
+                options.add(option);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(null);
+        }
+
+        return ResponseEntity.ok(options);
+    }
+
+    // ✅ item-option 테이블 데이터 모델
+    public static class ItemOption {
+        public String code;
+        public String name;
+        public String optionValue;
+        public String manufacturingcompanyCode;
+    }
+    
+    @GetMapping("/search")
+    public ResponseEntity<List<Goods>> searchItems(@RequestParam String keyword) {
+        // 검색어를 공백(" ") 기준으로 분리
+        String[] keywords = keyword.split("\\s+");
+
+        // 기본 SQL 쿼리 생성
+        StringBuilder queryBuilder = new StringBuilder(
+            "SELECT g.*, mc.nameEng AS manufacturingCompanyName " +
+            "FROM goods g " +
+            "LEFT JOIN manufacturingcompany mc ON g.manufacturing_company_code = mc.code " +
+            "WHERE "
+        );
+
+        // 검색어 개수만큼 AND 조건 추가
+        for (int i = 0; i < keywords.length; i++) {
+            if (i > 0) {
+                queryBuilder.append(" AND ");
+            }
+            queryBuilder.append("(g.item_name LIKE ? OR g.item_number LIKE ? OR g.keyword LIKE ?)");
+        }
+
+        List<Goods> goodsList = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(queryBuilder.toString())) {
+
+            // 검색어 파라미터 바인딩
+            int paramIndex = 1;
+            for (String key : keywords) {
+                String searchKey = "%" + key + "%";
+                statement.setString(paramIndex++, searchKey);
+                statement.setString(paramIndex++, searchKey);
+                statement.setString(paramIndex++, searchKey);
+            }
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                goodsList.add(mapGoods(resultSet));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(null);
+        }
+
+        return ResponseEntity.ok(goodsList); // ✅ JSON 응답
     }
 
     @GetMapping("/category-items")
@@ -152,7 +240,7 @@ public class GetItems {
     @GetMapping("/goods/all")
     @ResponseBody
     public GoodsPage getAllGoods(@RequestParam(defaultValue = "1") int page) {
-        int pageSize = 50;  // 한 페이지당 표시할 상품 개수
+        int pageSize = 25;  // 한 페이지당 표시할 상품 개수
         int offset = (page - 1) * pageSize; // 페이지에 맞는 데이터 OFFSET 계산
 
         String query = "SELECT g.*, mc.nameEng AS manufacturingCompanyName " +

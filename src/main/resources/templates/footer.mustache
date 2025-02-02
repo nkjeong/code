@@ -7,9 +7,7 @@
 							<img src="/images/source/footer_logo.png">
 						</a>
 					</article>
-					<article class="eng">
-						2023 - 2024
-					</article>
+					<article class="eng since"><!-- setGransenInfo fn --></article>
 				</section>
 				<section class="company">
 					<article class="eng">COMPANY</article>
@@ -53,6 +51,8 @@
 	    <script src="/js/index.js"></script>
 	    <script src="/js/category.js"></script>
 	    <script src="/js/currentMoney.js"></script>
+	    <script src="/js/calendar.js"></script>
+	    <script src="/js/member.js"></script>
 		<script>
 		    const swiper = new Swiper('.swiper', {
 		      // pass EffectMaterial module to modules
@@ -80,7 +80,7 @@
 		    {{#items}}
 		    	const getAllItems = () => {
 		    		const allItems = document.querySelector('.all-items-wrapper');
-		    		getItems(`/goods/all`, allItems);
+		    		getItems(`/goods/all?page=1`, allItems);
 		    	}
 		    	getAllItems();
 		    {{/items}}

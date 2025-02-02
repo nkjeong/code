@@ -13,36 +13,91 @@
 	    <title>WMULLYU</title>
 	</head>
 	<body>
-		<!-- Modal -->
-		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		  <div class="modal-dialog">
+		<!-- BRAND Modal -->
+		<div class="modal fade" id="brandModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-dialog-centered">
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+		        <h5 class="modal-title" id="exampleModalLabel">BRAND</h5>
 		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		      </div>
 		      <div class="modal-body">
-		        ...
+		        이 모달은 화면 중앙에 표시됩니다.
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-		        <button type="button" class="btn btn-primary">Login</button>
+		        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 		      </div>
 		    </div>
 		  </div>
 		</div>
+
+		<!-- login modal -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h1 class="modal-title fs-5 eng" id="exampleModalLabel">WMULLYU Member Login</h1>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body eng">
+					<div class="form-floating mb-3">
+					  <input type="text" class="form-control userId" id="floatingInput" placeholder="name@example.com" name="userId">
+					  <label for="floatingInput">ID</label>
+					</div>
+					<div class="form-floating">
+					  <input type="password" class="form-control userPw" id="floatingPassword" placeholder="Password" name="userPw">
+					  <label for="floatingPassword">Password</label>
+					</div>
+		      </div>
+		      <div class="modal-footer">
+		      	<div class="alert alert-danger msg" role="alert"></div>
+		        <button type="button" class="btn btn-secondary eng" data-bs-dismiss="modal">Close</button>
+		        <button type="button" class="btn btn-primary eng">Login</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- offcanvasTop -->
+		<div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+		  <div class="offcanvas-header">
+		    <h5 class="offcanvas-title" id="offcanvasTopLabel">ADMINISTRATOR</h5>
+		    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		  </div>
+		  <div class="offcanvas-body align-items-center">
+			<ul class="nav justify-content-center align-items-center">
+			  <li class="nav-item">
+			    <a class="nav-link" href="#">MEMBER</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="#">ITEM</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="#">ORDER</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" href="#">SITE</a>
+			  </li>
+			</ul>
+		  </div>
+		</div>
+		
+		<!-- offcanvasRight -->
 		<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
 		  <div class="offcanvas-header">
-		    <h5 class="offcanvas-title" id="offcanvasRightLabel">Offcanvas right</h5>
-		    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		    <h5 class="offcanvas-title eng" id="offcanvasRightLabel">Item Information</h5>
+		    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		  </div>
+		  <div class="item-representative"></div>
 		  <div class="offcanvas-body">
 		    ...
 		  </div>
 		</div>
+		
+		<!-- offcanvasExample -->
 		<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
 		  <div class="offcanvas-header">
-		    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Language</h5>
+		    <h5 class="offcanvas-title eng" id="offcanvasExampleLabel">Language</h5>
 		    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		  </div>
 		  <div class="offcanvas-body">
@@ -50,21 +105,48 @@
 			</div>
 		  </div>
 		</div>
-
 	    <header>
-			<section class="line-decoration">
+		    	{{#isAdmin}}
+					<input type="hidden" value="{{authority}}" name="authority" class="authority">
+		    	{{/isAdmin}}
+	    	<section class="line-decoration">
 				<article class="in-line">
 					<ul class="eng">
+						{{#user.userId}}
+						<input type="hidden" value="{{user.userId}}" name="member" class="member">
+						<li class="loginStatus">welcome {{user.userId}}!</li>
+						{{/user.userId}}
+						<li class="setTodate"></li>
+						{{#user.userId}}
+						<li class="memberInfo">MEMBER</li>
+						<li class="logoutBtn" onclick="location.href='/logout'">LOGOUT</li>
+						{{/user.userId}}
+						{{^user.userId}}
 						<li data-bs-toggle="modal" data-bs-target="#exampleModal" class="loginBtn">LOGIN</li>
+						{{/user.userId}}
 					</ul>
 				</article>
 			</section>
 	    	<section class="header eng">WMULLYU Data Sharing Center &&nbsp;<span>Language</span></section>
 	    	<section class="search">
 	    		<form>
-	    			<input type="text" name="keyword" class="keyword">
+	    			<input type="text" name="keyword" class="keyword" placeholder="검색어를 입력하세요~">
 	    		</form>
 	    	</section>
 	    	<section class="nav"><!-- getCategory fn data --></section>
+	    	{{#items}}
+	    		<section class="pagination-wrapper">
+	    		</section>
+	    	{{/items}}
 	    </header>
 	    <main>
+	    	<section class="search-items-wrapper">
+	    		<section class="search-items-wrapper-close search-items search-items-title">
+	    			<article>
+	    				<span>WMULLYU Data Sharing Center</span><img src="/images/source/footer_logo.png"><span>Search</span>
+	    			</article>
+	    			<article class="search-title"></article>
+	    			<article><button type="button" class="btn-close btn-close-white" aria-label="Close"></button></article>
+	    		</section>
+	    		<section class="search-items-list-wrapper"></section>
+	    	</section>
