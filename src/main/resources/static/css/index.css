@@ -10,7 +10,7 @@
 html, body{
 	font-family: "Noto Sans KR", serif;
 	background-color: var(--base-color-black);
-	color:var(--base-color-gray-a);
+	color:var(--base-color-gray-h);
 	font-size:0.9rem;
 }
 .eng{
@@ -22,7 +22,7 @@ html, body{
 header{
 	border-bottom:1px solid var(--base-color-gray-b);
 	padding:10px 0;
-	color:var(--base-color-gray-c);
+	color:var(--base-color-gray-h);
 	z-index: 900;
 	background-color: var(--base-color-black);
 	width:100%;
