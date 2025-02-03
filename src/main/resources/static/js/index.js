@@ -102,6 +102,7 @@ const mainBannerTop = document.querySelector('.main-banner-top');
     '.banner-center',
 	'.category-goods',
 	'.all-items-wrapper',
+	'.brand-items-wrapper',
 	'.all-items-page.pagination-wrapper'
 ].forEach((selector) => lineDecoration(mainBannerTop, selector));
 
@@ -489,19 +490,60 @@ setOffcanvas();
 
 const brandModalElement = document.getElementById("brandModal");
 brandModalElement.addEventListener("shown.bs.modal", (event) => {
-	getBrands();
+	getBrands(event.currentTarget);
 });
 
 
-const getBrands = async () => {
+const getBrands = async (ele) => {
     try {
-        const response = await fetch('/brands/all'); // ✅ 서버 API 호출
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const brands = await response.json();
-        console.log(brands); // ✅ 데이터 출력
+		await fetch("http://localhost:8080/api/brand/list")
+		    .then(response => response.json())
+		    .then(data => {
+				const brandLength = data.length;
+				const brandTitle = ele.querySelector('.modal-title');
+				const brandBody = ele.querySelector('.modal-body');
+				brandTitle.innerHTML = `BRAND (${brandLength}개)`;
+				let html = '';
+				data.forEach((list)=>{
+					html += `
+						<div title="${list.nameEng}" onclick="location.href='/brand?brandCode=${list.code}'">
+							${list.nameKor}
+						</div>
+					`;
+				});
+				brandBody.innerHTML = html;
+				/*getBrandItems(brandBody);*/
+			})
+		    .catch(error => console.error("Error fetching data:", error));
     } catch (error) {
         console.error("Error fetching brands:", error);
     }
-};
+}
+
+/*const getBrandItems = (ele) => {
+	const brand = ele.querySelectorAll('div');
+	brand.forEach((bd)=>{
+		const brandCode = bd.dataset.code;
+		fetch(`http://localhost:8080/goods/by-manufacturer?manufacturingCompanyCode=${brandCode}`)
+		    .then(response => response.json())
+		    .then(data => {
+		        console.log("Received Goods Data:", data);
+		        
+		        // 예제: HTML에 데이터 표시
+		        const itemsContainer = document.getElementById("items-list");
+		        itemsContainer.innerHTML = "";  // 기존 내용 삭제
+		        
+		        data.forEach(item => {
+		            const itemElement = document.createElement("div");
+		            itemElement.innerHTML = `
+		                <p><strong>상품명:</strong> ${item.itemName}</p>
+		                <p><strong>가격:</strong> ${item.itemRetailPrice}원</p>
+		                <p><strong>제조사:</strong> ${item.manufacturingCompanyName}</p>
+		                <hr>
+		            `;
+		            itemsContainer.appendChild(itemElement);
+		        });
+		    })
+		    .catch(error => console.error("Error fetching data:", error));
+	});
+}*/

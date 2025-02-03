@@ -74,7 +74,7 @@
 		    		const categoryGoodsItems = document.querySelector('.category-goods');
 		    		getItems(`/category-items?idx=${idx}`, categoryGoodsItems);
 		    	}
-		    	getCategoryItems("{{ categoryIdx }}");
+		    	getCategoryItems("{{categoryIdx}}");
 		    {{/categoryIdx}}
 		    
 		    {{#items}}
@@ -84,6 +84,15 @@
 		    	}
 		    	getAllItems();
 		    {{/items}}
+		    
+		    {{#brandCode}}
+		    	const getBrandItems = (code) => {
+		    		const brandItems = document.querySelector('.brand-items-wrapper');
+		    		console.log(code)
+		    		getItems(`/goods/by-manufacturer?manufacturingCompanyCode=${code}`, brandItems);
+		    	}
+		    	getBrandItems("{{brandCode}}");
+		    {{/brandCode}}
 		</script>
 	</body>
 </html>

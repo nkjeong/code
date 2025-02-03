@@ -68,6 +68,11 @@ public class GetItems {
     	model.addAttribute("items", items); // 선택한 카테고리 코드 전달
         return "all-items";
     }
+    @GetMapping("/brand")
+    public String brandIteml(@RequestParam(required = false) String brandCode, Model model) {
+    	model.addAttribute("brandCode", brandCode); // 선택한 카테고리 코드 전달
+        return "brand-items";
+    }
     
     @GetMapping("/options")
     @ResponseBody
@@ -116,7 +121,7 @@ public class GetItems {
 
         // 기본 SQL 쿼리 생성
         StringBuilder queryBuilder = new StringBuilder(
-            "SELECT g.*, mc.nameEng AS manufacturingCompanyName " +
+            "SELECT g.*, mc.name_eng AS manufacturingCompanyName " +
             "FROM goods g " +
             "LEFT JOIN manufacturingcompany mc ON g.manufacturing_company_code = mc.code " +
             "WHERE "
@@ -159,7 +164,7 @@ public class GetItems {
     @GetMapping("/category-items")
     @ResponseBody
     public List<Goods> getCategoryItems(@RequestParam String idx) {
-    	String query = "SELECT g.*, mc.nameEng AS manufacturingCompanyName " +
+    	String query = "SELECT g.*, mc.name_eng AS manufacturingCompanyName " +
                 "FROM goods g " +
                 "LEFT JOIN manufacturingcompany mc " +
                 "ON g.manufacturing_company_code = mc.code " +
@@ -243,7 +248,7 @@ public class GetItems {
         int pageSize = 25;  // 한 페이지당 표시할 상품 개수
         int offset = (page - 1) * pageSize; // 페이지에 맞는 데이터 OFFSET 계산
 
-        String query = "SELECT g.*, mc.nameEng AS manufacturingCompanyName " +
+        String query = "SELECT g.*, mc.name_eng AS manufacturingCompanyName " +
                 "FROM goods g " +
                 "LEFT JOIN manufacturingcompany mc " +
                 "ON g.manufacturing_company_code = mc.code " +
@@ -286,7 +291,7 @@ public class GetItems {
     @GetMapping("/goods/new")
     @ResponseBody  // ✅ JSON 응답을 반환하도록 변경
     public List<Goods> getNewGoods() throws SQLException {
-        String query = "SELECT g.*, mc.nameEng AS manufacturingCompanyName " +
+        String query = "SELECT g.*, mc.name_eng AS manufacturingCompanyName " +
                        "FROM goods g " +
                        "LEFT JOIN manufacturingcompany mc " +
                        "ON g.manufacturing_company_code = mc.code " +
@@ -307,7 +312,7 @@ public class GetItems {
     @GetMapping("/goods/by-category")
     @ResponseBody  // ✅ JSON 응답을 반환하도록 변경
     public List<Goods> getGoodsByCategory(@RequestParam String idx) throws SQLException {
-        String query = "SELECT g.*, mc.nameEng AS manufacturingCompanyName " +
+        String query = "SELECT g.*, mc.name_eng AS manufacturingCompanyName " +
                        "FROM goods g " +
                        "LEFT JOIN manufacturingcompany mc " +
                        "ON g.manufacturing_company_code = mc.code " +
@@ -363,6 +368,33 @@ public class GetItems {
         return goods;
     }
     
+    @GetMapping("/goods/by-manufacturer")
+    @ResponseBody
+    public ResponseEntity<List<Goods>> getGoodsByManufacturer(@RequestParam String manufacturingCompanyCode) {
+        String query = "SELECT g.*, mc.name_eng AS manufacturingCompanyName " +
+                       "FROM goods g " +
+                       "LEFT JOIN manufacturingcompany mc " +
+                       "ON g.manufacturing_company_code = mc.code " +
+                       "WHERE g.manufacturing_company_code = ?";
+
+        List<Goods> goodsList = new ArrayList<>();
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setString(1, manufacturingCompanyCode);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                goodsList.add(mapGoods(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(null);
+        }
+
+        return ResponseEntity.ok(goodsList); // JSON 반환
+    }
+
     public static class GoodsPage {
         public List<Goods> items;
         public int currentPage;
