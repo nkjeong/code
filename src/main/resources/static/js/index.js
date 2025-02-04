@@ -512,38 +512,9 @@ const getBrands = async (ele) => {
 					`;
 				});
 				brandBody.innerHTML = html;
-				/*getBrandItems(brandBody);*/
 			})
 		    .catch(error => console.error("Error fetching data:", error));
     } catch (error) {
         console.error("Error fetching brands:", error);
     }
 }
-
-/*const getBrandItems = (ele) => {
-	const brand = ele.querySelectorAll('div');
-	brand.forEach((bd)=>{
-		const brandCode = bd.dataset.code;
-		fetch(`http://localhost:8080/goods/by-manufacturer?manufacturingCompanyCode=${brandCode}`)
-		    .then(response => response.json())
-		    .then(data => {
-		        console.log("Received Goods Data:", data);
-		        
-		        // 예제: HTML에 데이터 표시
-		        const itemsContainer = document.getElementById("items-list");
-		        itemsContainer.innerHTML = "";  // 기존 내용 삭제
-		        
-		        data.forEach(item => {
-		            const itemElement = document.createElement("div");
-		            itemElement.innerHTML = `
-		                <p><strong>상품명:</strong> ${item.itemName}</p>
-		                <p><strong>가격:</strong> ${item.itemRetailPrice}원</p>
-		                <p><strong>제조사:</strong> ${item.manufacturingCompanyName}</p>
-		                <hr>
-		            `;
-		            itemsContainer.appendChild(itemElement);
-		        });
-		    })
-		    .catch(error => console.error("Error fetching data:", error));
-	});
-}*/

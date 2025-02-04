@@ -73,6 +73,11 @@ public class GetItems {
     	model.addAttribute("brandCode", brandCode); // 선택한 카테고리 코드 전달
         return "brand-items";
     }
+    @GetMapping("/partner")
+    public String partnerPage(@RequestParam(required = false) String what, Model model) {
+    	model.addAttribute("what", what); // 선택한 카테고리 코드 전달
+        return "partner-page";
+    }
     
     @GetMapping("/options")
     @ResponseBody

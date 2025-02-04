@@ -53,6 +53,7 @@
 	    <script src="/js/currentMoney.js"></script>
 	    <script src="/js/calendar.js"></script>
 	    <script src="/js/member.js"></script>
+
 		<script>
 		    const swiper = new Swiper('.swiper', {
 		      // pass EffectMaterial module to modules
@@ -84,15 +85,44 @@
 		    	}
 		    	getAllItems();
 		    {{/items}}
-		    
+
 		    {{#brandCode}}
 		    	const getBrandItems = (code) => {
 		    		const brandItems = document.querySelector('.brand-items-wrapper');
-		    		console.log(code)
 		    		getItems(`/goods/by-manufacturer?manufacturingCompanyCode=${code}`, brandItems);
 		    	}
 		    	getBrandItems("{{brandCode}}");
 		    {{/brandCode}}
+			{{#what}}
+				const partnerPageTitle = '{{what}}';
+				
+				document.addEventListener("DOMContentLoaded", function () {
+				    const observer = new IntersectionObserver(entries => {
+				        entries.forEach(entry => {
+				            if (entry.isIntersecting) {
+				                entry.target.classList.add("visible");  // 화면에 보이면 애니메이션 활성화
+				            }
+				        });
+				    }, { threshold: 0.1 });  // 요소가 10% 이상 보이면 실행
+
+				    // 특정 클래스를 가진 요소들을 관찰하는 함수
+				    function observeElements(selector) {
+				        const elements = document.querySelectorAll(selector);
+				        if(elements){
+				        	elements.forEach(element => observer.observe(element));
+				        }
+				    }
+
+				    // 적용할 대상들
+				    observeElements(".comments_01");
+				    observeElements(".partner-img-banner-01");
+				    observeElements(".shopping-img-banner-01");
+				    observeElements(".triple-img"); // 새로운 triple-img 추가
+				});
+			{{/what}}
 		</script>
+		{{#what}}
+			<script src="/js/partner.js"></script>
+		{{/what}}
 	</body>
 </html>

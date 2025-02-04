@@ -10,6 +10,9 @@
 	    <link rel="stylesheet" href="/js/material-you-slider/dist/index.css">
 	    <link rel="stylesheet" href="/css/var.css">
 	    <link rel="stylesheet" href="/css/index.css">
+	    {{#what}}
+	    	<link rel="stylesheet" href="/css/partner.css">
+	    {{/what}}
 	    <title>WMULLYU</title>
 	</head>
 	<body>
@@ -113,6 +116,8 @@
 				<article class="in-line">
 					<ul class="eng">
 						{{#user.userId}}
+						<li class="excel">Excel download[All items]</li>
+						<li class="excel">Excel download[Search items]</li>
 						<input type="hidden" value="{{user.userId}}" name="member" class="member">
 						<li class="loginStatus">welcome {{user.userId}}!</li>
 						{{/user.userId}}
