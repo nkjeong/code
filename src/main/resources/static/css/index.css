@@ -34,6 +34,11 @@ header .line-decoration > .in-line{
 	background-color: var(--base-color-gray-b);
 	padding:5px;
 	border-radius: 5px;
+	cursor: pointer;
+}
+header .excel:hover{
+	color:var(--base-color-white);
+	background-color: var(--base-color-orange-a);
 }
 .scroll-header{
 	position: absolute;
@@ -49,6 +54,7 @@ header .line-decoration > .in-line{
 .header span{
 	color:var(--base-color-red-a);
 }
+
 .search{
 	display: flex;
 	justify-content: center;

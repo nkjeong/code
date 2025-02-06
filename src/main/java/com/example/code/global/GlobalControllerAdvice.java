@@ -13,7 +13,6 @@ public class GlobalControllerAdvice {
     public void addGlobalAttributes(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
         Boolean isAdmin = (Boolean) session.getAttribute("isAdmin");
-
         if (user != null && user.getUserId() != null) { // 로그인된 경우
             model.addAttribute("user", user);
             model.addAttribute("userId", user.getUserId());
