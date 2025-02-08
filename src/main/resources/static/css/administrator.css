@@ -1,0 +1,117 @@
+@charset "UTF-8";
+.admin-main{
+	display: flex;
+	justify-content: space-between;
+	width:100%;
+	border-top: 1px solid var(--base-color-gray-b);
+}
+
+.admin-main .left{
+	width:200px;
+	display: flex;
+	flex-direction:column;
+	border-right: 1px solid var(--base-color-gray-b);
+}
+
+.admin-main .left article:first-child{
+	padding:15px 0;
+	text-align: center;
+	font-weight: 700;
+	font-size:1.2rem;
+	border-bottom: 1px solid var(--base-color-gray-b);
+}
+
+.admin-main .left article div{
+	padding:10px 0 10px 20px;
+	font-size:1.0rem;
+	cursor:pointer;
+}
+
+.admin-main .left article div:hover{
+	color: var(--base-color-white);
+	background-color: var(--base-color-gray-a);
+}
+
+.admin-main .left article div:not(:last-child){
+	border-bottom: 1px dotted var(--base-color-gray-b);
+}
+
+.admin-main .right{
+	flex:1;
+	display: flex;
+	padding:15px;
+}
+
+.admin-main .right > section{
+	width:100%;
+}
+
+.admin-main .right > section > section:first-child{
+	padding-bottom:15px;
+	font-size:1.2rem;
+	font-weight: 700;
+}
+.right .admin-content{
+	width:100%;
+	padding:15px;
+	display: flex;
+	border-top: 1px solid var(--base-color-gray-b);
+}
+
+.right .admin-content > section{
+	margin-right:25px;
+}
+
+.admin-content.category > section > section:first-child{
+	padding:10px;
+	background-color:var(--base-color-gray-a);
+	width:fit-content;
+	border-radius: 10px;
+	font-size:1.1rem;
+	font-weight: 700;
+	color:var(--bs-gray-500);
+	margin-bottom: 10px;
+}
+.category_first,
+.category_second{
+	display: none;  /* 처음에는 안 보이게 */
+	flex-direction: column;
+	align-items: flex-end;
+	padding-right:10px;
+    opacity: 0;
+    transform: translateX(-50px);  /* 왼쪽에서 시작 */
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.category_first.show,
+.show{
+    opacity: 1;
+    transform: translateX(0);  /* 오른쪽으로 이동 */
+}
+
+
+.admin-content.category > section > section.category_first > article,
+.admin-content.category > section > section.category_second > article{
+	padding:10px 0 10px 20px;
+	border-bottom:1px dotted var(--base-color-gray-b);
+	width:90%;
+	font-weight: 700;
+}
+.admin-content.category > section > section.category_first > article .form-check label,
+.admin-content.category > section > section.category_second > article .form-check label{
+	cursor:pointer;
+}
+
+.admin-content.category > section > section.category_first > article:hover,
+.admin-content.category > section > section.category_second > article:hover{
+	color:var(--base-color-red-a);
+	text-decoration: underline;
+}
+
+.f-cate-title span{
+	cursor: pointer;
+}
+
+.f-cate-title span:hover{
+	color:var(--base-color-red-a);
+}

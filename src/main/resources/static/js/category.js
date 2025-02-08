@@ -46,7 +46,7 @@ const getCategory = async (url) => {
     for (const category of data) {
         html += `
             <article class="nav-btn">
-                <span class="btn-str">${category.cateName}</span>
+                <span class="btn-str" data-mode="category" data-name="${category.cateName}" data-code="${category.idx}">${category.cateName}</span>
                 <span class="arrow-down">
                     <i class="bi bi-caret-down-fill"></i>
                 </span>
@@ -61,16 +61,20 @@ const getCategory = async (url) => {
 };
 
 // 2차 카테고리 가져오기 및 HTML 반환
-const getCategorySecond = async (idx) => {
-    const url = `http://localhost:8080/categories/${idx}/second`;
+const getCategorySecond = async (idx, adminPage) => {
+    const url = `/categories/${idx}/second`;
     const data = await fetchData(url);
     if (!data) return '';
+	if (adminPage) return data;
 
     let html = '<ul>';
     for (const category of data) {
         html += `
             <li data-idx="${category.idx}" onclick="location.href='/items?idx=${idx}${category.idx}'">
-                ${category.name}
+                <span>${category.name}</span>
+				<article class="third_menu">
+					${await getCategoryThird(idx, category.idx)}
+				</article>
             </li>
         `;
     }
@@ -79,7 +83,40 @@ const getCategorySecond = async (idx) => {
     return html;
 };
 
+const getCategoryThird = async (fIdx, sIdx, adminPage) => {
+    const url = `/categories/third?fIdx=${fIdx}&sIdx=${sIdx}`;
+
+    try {
+        const data = await fetchData(url);
+
+        // 서버에서 응답이 없거나 데이터가 비어 있는 경우
+        if (!data || (Array.isArray(data) && data.length === 0)) {
+            console.warn(`No data found for fIdx=${fIdx}, sIdx=${sIdx}`);
+            return '<p>해당 조건에 맞는 데이터가 없습니다.</p>';
+        }
+
+        // 관리자 페이지에서 데이터가 필요할 경우 원본 반환
+        if (adminPage) return data;
+
+        let html = '<ul>';
+        for (const category of data) {
+            html += `
+                <li data-fidx="${fIdx}" data-sidx="${sIdx}" data-tidx="${category.idx}">
+                    <span>${category.name}</span>
+                </li>
+            `;
+        }
+        html += '</ul>';
+
+        return html;
+    } catch (error) {
+        console.error("Error fetching categoryThird:", error);
+        return '<p>데이터를 가져오는 중 오류가 발생했습니다.</p>';
+    }
+};
+
+
 // 초기화
 document.addEventListener('DOMContentLoaded', () => {
-    getCategory('http://localhost:8080/categories');
+    getCategory('/categories');
 });

@@ -13,6 +13,9 @@ html, body{
 	color:var(--base-color-gray-h);
 	font-size:0.9rem;
 }
+body{
+	overflow: scroll;
+}
 .eng{
 	font-family: "Exo 2", serif;
 }
@@ -116,7 +119,7 @@ li.loginBtn:hover, li.logoutBtn:hover, li.memberInfo:hover{
   left:50%;
   transform: translateY(50px) translateX(-50%); /* 초기 위치를 살짝 위로 이동 */
   position: absolute;
-  width: max-content;
+  width: 200px;
   height: max-content;
   background-color: var(--base-color-black);
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s; /* visibility를 마지막에 처리 */
@@ -134,7 +137,13 @@ li.loginBtn:hover, li.logoutBtn:hover, li.memberInfo:hover{
 
 .sub-menu ul li{
 	padding:5px 0;
+	position: relative;
+}
+.sub-menu ul li > span{
+	display:inline-block;
 	cursor:pointer;
+	width: 100%;
+	height:100%;
 }
 .sub-menu ul li:not(:last-child){
 	border-bottom:1px solid var(--base-color-gray-d);
@@ -151,6 +160,31 @@ li.loginBtn:hover, li.logoutBtn:hover, li.memberInfo:hover{
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0s; /* visibility 즉시 활성화 */
 }
 
+
+.third_menu{
+	visibility: hidden;
+  	opacity: 0;
+	position:absolute;
+	width:200px;
+	height:200px;
+	right:-50%;
+	background-color:#000000;
+	border: 1px solid var(--base-color-gray-d);
+	transform:translateY(50px) translateX(30%);
+	border-radius: 10px;
+	z-index: 1001;
+	transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0.3s; /* visibility를 마지막에 처리 */
+	box-shadow: 10px 10px 10px rgba(0,0,0,0.5);
+}
+
+.sub-menu ul li:hover .third_menu{
+	visibility: visible; /* 보이도록 설정 */
+  	opacity: 1;
+  	right:-50%;
+  	transform:translateY(-40px) translateX(30%);
+  	transition: opacity 0.3s ease, transform 0.3s ease, visibility 0s 0s; /* visibility 즉시 활성화 */
+}
+
 .arrow-down{
 	position:absolute;
 	width:fit-content;
@@ -163,6 +197,8 @@ li.loginBtn:hover, li.logoutBtn:hover, li.memberInfo:hover{
 	color:var(--base-color-red-a);
     transform: rotate(180deg);
 }
+
+
 
 main{
 	padding-top:30px;

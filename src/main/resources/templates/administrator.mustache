@@ -1,0 +1,68 @@
+{{#isAdmin}}
+
+	{{> header}}
+		<input type="hidden" value="{{fn}}" name="admin-menu" class="admin-menu">
+		<section class="admin-main">
+			<section class="left"></section>
+			<section class="right"></section>
+		</section>
+	{{> footer}}
+	
+{{/isAdmin}}
+
+{{^isAdmin}}
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>Document</title>
+	    <style>
+	    	*{
+	    		margin:0;
+	    		padding:0;
+	    	}
+	    	html, body{
+	    		margin:0;
+	    		padding:0;
+	    		height:100%;
+	    		width:100%;
+	    	}
+	    	body{
+	    		overflow: hidden;
+	    	}
+	    	.wrong-main{
+	    		width:100%;
+	    		height:100%;
+	    		display: flex;
+	    		justify-content: center;
+	    		align-items: center;
+	    	}
+	    	
+	    	.wrong-main section{
+	    		padding:50px;
+	    		background-color: orange;
+	    		color:red;
+	    		border-radius: 20px;
+	    		border:1px solid red;
+	    		text-align: center;
+	    	}
+	    	.wrong-main span{
+	    		cursor: pointer;
+	    	}
+	    	.wrong-main span:hover{
+	    		color:white;
+	    		text-decoration: underline;
+	    	}
+	    </style>
+	</head>
+	<body>
+	    <section class="wrong-main">
+	    	<section>
+	    		이 접속은 잘못되었습니다.<br>
+	    		<span onclick="location.href='/';">home</span>
+	    	</section>
+	    </section>
+	</body>
+</html>
+{{/isAdmin}}

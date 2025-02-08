@@ -496,7 +496,7 @@ brandModalElement.addEventListener("shown.bs.modal", (event) => {
 
 const getBrands = async (ele) => {
     try {
-		await fetch("http://localhost:8080/api/brand/list")
+		await fetch("/api/brand/list")
 		    .then(response => response.json())
 		    .then(data => {
 				const brandLength = data.length;

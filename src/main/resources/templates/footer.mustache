@@ -38,7 +38,7 @@
 					<article>E. : wmullyu@gmail.com</article>
 				</section>
 				<section class="family">
-					<article class="eng">family site</article>
+					<article class="eng">Family site</article>
 					<article>Maped</article>
 				</section>
 			</section>
@@ -53,6 +53,9 @@
 	    <script src="/js/currentMoney.js"></script>
 	    <script src="/js/calendar.js"></script>
 	    <script src="/js/member.js"></script>
+	    {{#isAdmin}}
+	    	<script src="/js/administrator.js"></script>
+	    {{/isAdmin}}
 
 		<script>
 		    const swiper = new Swiper('.swiper', {
