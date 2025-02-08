@@ -80,8 +80,8 @@ function setRightContent(dataMenu, menuName){
 		const sCateTitle = right.querySelector('.s-cate-title');
 		navCategory.forEach((cate, i)=>{
 			html += `
-				<article data-idx="${cate.dataset.code}" data-name="${cate.dataset.name}">
-					<div class="form-check">
+				<article>
+					<div class="form-check" data-idx="${cate.dataset.code}" data-name="${cate.dataset.name}">
 					  <input class="form-check-input" value="${cate.dataset.code}" type="radio" data-fname="${cate.dataset.name}" name="r-cate-f-code" id="f-flexRadioDefault1-${i}">
 					  <label class="form-check-label" for="f-flexRadioDefault1-${i}">
 					    ${cate.dataset.name}
@@ -97,7 +97,7 @@ function setRightContent(dataMenu, menuName){
 		        categoryFirst.classList.add('show');
 		    }, 10);
 		}
-		const firstBtn = categoryFirst.querySelectorAll('article');
+		const firstBtn = categoryFirst.querySelectorAll('article > div.form-check');
 		
 		
 		firstBtn.forEach((btns) => {
@@ -134,7 +134,7 @@ function setRightContent(dataMenu, menuName){
 		    });
 		});
 		
-		fCateCRUD(fCateTitle, categoryFirst);
+		fCateCRUD(fCateTitle, categoryFirst, dataMenu, menuName);
 	}
 }
 
@@ -197,7 +197,7 @@ function setItemContentHTML(menuName){
 	`;
 }
 
-const fCateCRUD = (fCateTitle, categoryFirst) => {
+const fCateCRUD = (fCateTitle, categoryFirst, dataMenu, menuName) => {
 	const getCheckRadio = categoryFirst.querySelectorAll('input[type="radio"');
 	const buttons = fCateTitle.querySelectorAll('.create, .update, .delete');
 
@@ -209,43 +209,48 @@ const fCateCRUD = (fCateTitle, categoryFirst) => {
 	                       '알 수 없음';
 
 	        if(action === 'create'){
-				createFCate();
+				createFCate(dataMenu, menuName);
 			}else if(action === 'update'){
-				updateFCate(getCheckRadio);
+				updateFCate(getCheckRadio, dataMenu, menuName);
 			}else if(action === 'delete'){
-				deleteFCate(getCheckRadio);
+				deleteFCate(getCheckRadio, dataMenu, menuName);
 			}
 	    });
 	});
 }
 
-const updateFCate = (getCheckRadio) => {
+const updateFCate = (getCheckRadio, dataMenu, menuName) => {
     const checkedRadio = [...getCheckRadio].find(r => r.checked);
     if (checkedRadio) {
 		let idx = checkedRadio.value;
 		let newName = prompt('"'+checkedRadio.dataset.fname+'" 을 어떤 이름으로 바꾸실건가요? 바꿀 이름을 입력하세요');
-		fetch(`/categories/${idx}/update`, {
-		    method: "PUT",
-		    headers: {
-		        "Content-Type": "application/json"
-		    },
-		    body: JSON.stringify({ cateName: newName })
-		})
-		.then(response => response.json())
-		.then(data => {
-		    if (data.success) {
-		        alert("카테고리 이름이 성공적으로 수정되었습니다.");
-		    } else {
-		        alert("오류: " + data.message);
-		    }
-		})
-		.catch(error => console.error("Error:", error));
+		if(newName !== null && newName.trim() !== ''){
+			fetch(`/categories/${idx}/update`, {
+			    method: "PUT",
+			    headers: {
+			        "Content-Type": "application/json"
+			    },
+			    body: JSON.stringify({ cateName: newName })
+			})
+			.then(response => response.json())
+			.then(data => {
+			    if (data.success) {
+			        alert("카테고리 이름이 성공적으로 수정되었습니다.");
+					setRightContent(dataMenu, menuName);
+			    } else {
+			        alert("오류: " + data.message);
+			    }
+			})
+			.catch(error => console.error("Error:", error));
+		}else{
+			alert('수정할 카테고리의 이름을 정확히 입력하세요');
+		}
     } else {
         alert('수정 할 카테고리를 선택하세요!');
     }
 };
 
-const createFCate = () => {
+const createFCate = (dataMenu, menuName) => {
 	const newCategoryName = prompt('신규 1차카테고리를 입력하세요.(30자 이하로 입력하세요)');
 	if (!newCategoryName || newCategoryName.trim().length === 0) {
 	    alert("카테고리 이름을 입력하세요.");
@@ -269,6 +274,7 @@ const createFCate = () => {
 	.then(data => {
 	    if (data.success) {
 	        alert(`카테고리가 추가되었습니다! (idx: ${data.idx})`);
+			setRightContent(dataMenu, menuName);
 	    } else {
 	        alert("오류: " + data.message);
 	    }
@@ -276,13 +282,13 @@ const createFCate = () => {
 	.catch(error => console.error("Error:", error));
 }
 
-const deleteFCate = (getCheckRadio) => {
+const deleteFCate = (getCheckRadio, dataMenu, menuName) => {
 	const checkedRadio = [...getCheckRadio].find(r => r.checked);
     if (checkedRadio) {
 		if(confirm(`선택하신 "${checkedRadio.dataset.fname}" 카테고리를 정말 삭제하시겠습니까? 삭제하시려면 확인을 누르고 카테고리 이름을 한번더 입력하세요!`)){
 			const cateName = prompt(`"${checkedRadio.dataset.fname}" 을 다시한번 입력하세요`);
 			if(cateName === checkedRadio.dataset.fname){
-				
+				setRightContent(dataMenu, menuName);
 			}else{
 				alert('카테고리 이름을 다시 확인하세요!')
 			}

@@ -97,6 +97,10 @@
 	width:90%;
 	font-weight: 700;
 }
+.admin-content.category > section > section.category_first > article .form-check,
+.admin-content.category > section > section.category_second > article .form-check{
+	width: max-content;
+}
 .admin-content.category > section > section.category_first > article .form-check label,
 .admin-content.category > section > section.category_second > article .form-check label{
 	cursor:pointer;
