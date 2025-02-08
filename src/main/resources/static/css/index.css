@@ -148,7 +148,7 @@ li.loginBtn:hover, li.logoutBtn:hover, li.memberInfo:hover{
 .sub-menu ul li:not(:last-child){
 	border-bottom:1px solid var(--base-color-gray-d);
 }
-.sub-menu ul li:hover{
+.sub-menu ul li > span:hover{
 	color:var(--base-color-red-a);
 }
 
@@ -166,9 +166,10 @@ li.loginBtn:hover, li.logoutBtn:hover, li.memberInfo:hover{
   	opacity: 0;
 	position:absolute;
 	width:200px;
-	height:200px;
+	padding:10px;
+	height:max-content;
 	right:-50%;
-	background-color:#000000;
+	background-color:var(--base-color-black);
 	border: 1px solid var(--base-color-gray-d);
 	transform:translateY(50px) translateX(30%);
 	border-radius: 10px;

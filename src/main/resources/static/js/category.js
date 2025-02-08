@@ -70,8 +70,8 @@ const getCategorySecond = async (idx, adminPage) => {
     let html = '<ul>';
     for (const category of data) {
         html += `
-            <li data-idx="${category.idx}" onclick="location.href='/items?idx=${idx}${category.idx}'">
-                <span>${category.name}</span>
+            <li>
+                <span data-idx="${category.idx}" onclick="location.href='/items?idx=${idx}${category.idx}'">${category.name}</span>
 				<article class="third_menu">
 					${await getCategoryThird(idx, category.idx)}
 				</article>
