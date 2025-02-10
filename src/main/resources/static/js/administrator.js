@@ -59,84 +59,114 @@ function setAdminMenu(menu){
 	}
 }
 
-function setRightContent(dataMenu, menuName){
-	const right = document.querySelector('.admin-main .right');
-	let html = '';
-	if(dataMenu === 'category'){
-		html = setCategoryContentHTML(menuName);
-	}else if(dataMenu === 'brand'){
-		html = setBrandContentHTML(menuName);
-	}else if(dataMenu === 'item'){
-		html = setItemContentHTML(menuName);
-	}
-	right.innerHTML = html;
-	
-	if(dataMenu === 'category'){
-		let html = '';
-		const fCateTitle = right.querySelector('.f-cate-title');
-		const categoryFirst = right.querySelector('.category_first');
-		const navCategory = document.querySelectorAll('header .nav [data-mode="category"]');
-		const categorySecond = right.querySelector('.category_second');
-		const sCateTitle = right.querySelector('.s-cate-title');
-		navCategory.forEach((cate, i)=>{
-			html += `
-				<article>
-					<div class="form-check" data-idx="${cate.dataset.code}" data-name="${cate.dataset.name}">
-					  <input class="form-check-input" value="${cate.dataset.code}" type="radio" data-fname="${cate.dataset.name}" name="r-cate-f-code" id="f-flexRadioDefault1-${i}">
-					  <label class="form-check-label" for="f-flexRadioDefault1-${i}">
-					    ${cate.dataset.name}
-					  </label>
-					</div>
-				</article>
-			`;
-		});
-		categoryFirst.innerHTML = html;
-		if (!categoryFirst.classList.contains('show')) {
-		    categoryFirst.style.display = 'flex';
-		    setTimeout(() => {
-		        categoryFirst.classList.add('show');
-		    }, 10);
-		}
-		const firstBtn = categoryFirst.querySelectorAll('article > div.form-check');
-		
-		
-		firstBtn.forEach((btns) => {
-		    btns.addEventListener('click', (btn) => {
-		        const idx = btn.currentTarget.dataset.idx;
-				const fCateName = btn.currentTarget.dataset.name;
-				sCateTitle.innerHTML = `2차 카테고리 (${fCateName})  [<span class="create">추가</span>, <span class="update">수정</span>, <span class="delete">삭제</span>]`;
-		        getCategorySecond(idx, 'yes').then((data) => {
-		            let html = '';
-					let i = 0;
-		            for (const category of data) {
-		                html += `
-		                    <article data-idx="${category.idx}">
-								<div class="form-check">
-								  <input class="form-check-input" value="${category.idx}" type="radio" name="r-cate-s-code" id="s-flexRadioDefault1-${i}">
-								  <label class="form-check-label" for="s-flexRadioDefault1-${i}">
-								    ${category.name}
-								  </label>
-								</div>
-		                    </article>
-		                `;
-						i++;
-		            }
-		            categorySecond.innerHTML = html;
-		            categorySecond.classList.remove('show');
-		            categorySecond.style.display = 'none';
+function setRightContent(dataMenu, menuName) {
+    const right = document.querySelector('.admin-main .right');
+    let html = '';
 
-		            setTimeout(() => {
-		                categorySecond.style.display = 'flex';
-		                void categorySecond.offsetHeight;
-		                categorySecond.classList.add('show');
-		            }, 50);
-		        });
-		    });
-		});
-		
-		fCateCRUD(fCateTitle, categoryFirst, dataMenu, menuName);
-	}
+    if (dataMenu === 'category') {
+        html = setCategoryContentHTML(menuName);
+    } else if (dataMenu === 'brand') {
+        html = setBrandContentHTML(menuName);
+    } else if (dataMenu === 'item') {
+        html = setItemContentHTML(menuName);
+    }
+    right.innerHTML = html;
+
+    if (dataMenu === 'category') {
+        let html = '';
+        const fCateTitle = right.querySelector('.f-cate-title');
+        const categoryFirst = right.querySelector('.category_first');
+        const navCategory = document.querySelectorAll('header .nav [data-mode="category"]');
+        const categorySecond = right.querySelector('.category_second');
+        const categoryThird = right.querySelector('.category_third');
+        const sCateTitle = right.querySelector('.s-cate-title');
+		const tCateTitle = right.querySelector('.t-cate-title');
+
+        navCategory.forEach((cate, i) => {
+            html += `
+                <article>
+                    <div class="form-check" data-idx="${cate.dataset.code}" data-name="${cate.dataset.name}">
+                      <input class="form-check-input" value="${cate.dataset.code}" type="radio" data-fname="${cate.dataset.name}" name="r-cate-f-code" id="f-flexRadioDefault1-${i}">
+                      <label class="form-check-label" for="f-flexRadioDefault1-${i}">
+                        ${cate.dataset.name}
+                      </label>
+                    </div>
+                </article>
+            `;
+        });
+
+        categoryFirst.innerHTML = html;
+
+        if (!categoryFirst.classList.contains('show')) {
+            categoryFirst.style.display = 'flex';
+            setTimeout(() => {
+                categoryFirst.classList.add('show');
+            }, 10);
+        }
+
+        let isProcessing = false; // 중복 실행 방지 플래그
+
+        // ✅ 기존 이벤트 리스너 제거 후 새로 추가
+        categoryFirst.removeEventListener('click', handleCategoryClick);
+        categoryFirst.addEventListener('click', handleCategoryClick);
+
+        function handleCategoryClick(event) {
+            event.stopPropagation(); // 이벤트 전파 방지
+
+            const btn = event.target.closest('.form-check');
+            if (!btn || event.target.tagName === 'INPUT') return; // input 클릭 시 무시
+
+            console.log(btn); // 디버깅용 콘솔 출력
+
+            if (isProcessing) return; // 이미 실행 중이면 중복 실행 방지
+            isProcessing = true; // 실행 시작
+
+            const idx = btn.dataset.idx;
+            const fCateName = btn.dataset.name;
+            sCateTitle.innerHTML = `2차 카테고리 (${fCateName})  [<span class="create">추가</span>, <span class="update">수정</span>, <span class="delete">삭제</span>]`;
+
+            getCategorySecond(idx, 'yes')
+                .then((data) => {
+                    let html = '';
+                    let i = 0;
+                    for (const category of data) {
+                        html += `
+                            <article data-fIdx="${idx}" data-sIdx="${category.idx}">
+                                <div class="form-check" data-idx="${category.idx}" data-name="${category.name}">
+                                  <input class="form-check-input" value="${category.idx}" type="radio" name="r-cate-s-code" id="s-flexRadioDefault1-${i}">
+                                  <label class="form-check-label" for="s-flexRadioDefault1-${i}">
+                                    ${category.name}
+                                  </label>
+                                </div>
+                            </article>
+                        `;
+                        i++;
+                    }
+
+                    categorySecond.innerHTML = html;
+                    categorySecond.classList.remove('show');
+                    categorySecond.style.display = 'none';
+                    setTimeout(() => {
+                        categorySecond.style.display = 'flex';
+                        void categorySecond.offsetHeight;
+                        categorySecond.classList.add('show');
+                    }, 50);
+
+                    const getCategorySecondWrapper = categorySecond.querySelectorAll('article > div.form-check');
+                    setCategoryThird(getCategorySecondWrapper, categoryThird, tCateTitle);
+
+                    isProcessing = false; // 실행 종료 후 플래그 해제
+                })
+                .catch((error) => {
+                    console.error("Error fetching second category:", error);
+                    isProcessing = false; // 오류 발생 시 플래그 해제
+                });
+        }
+
+        fCateCRUD(fCateTitle, categoryFirst, dataMenu, menuName);
+    }
 }
+
 
 function setCategoryContentHTML(menuName){
 	return `
@@ -297,4 +327,16 @@ const deleteFCate = (getCheckRadio, dataMenu, menuName) => {
 	} else {
 	    alert('삭제 할 카테고리를 선택하세요!');
 	}
+}
+
+const setCategoryThird = (getCategorySecondWrapper, categoryThird, tCateTitle) => {
+	getCategorySecondWrapper.forEach((btns)=>{
+		btns.addEventListener('click', (event)=>{
+			event.stopPropagation(); // 이벤트 전파 방지
+			console.log(event.target)
+            const btn = event.target.closest('.form-check');
+            if (!btn || event.target.tagName === 'INPUT') return; // input 클릭 시 무시
+
+		});
+	});
 }
