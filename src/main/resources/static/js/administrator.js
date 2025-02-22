@@ -333,10 +333,11 @@ const setCategoryThird = (getCategorySecondWrapper, categoryThird, tCateTitle) =
 	getCategorySecondWrapper.forEach((btns)=>{
 		btns.addEventListener('click', (event)=>{
 			event.stopPropagation(); // 이벤트 전파 방지
-			console.log(event.target)
             const btn = event.target.closest('.form-check');
             if (!btn || event.target.tagName === 'INPUT') return; // input 클릭 시 무시
-
+			console.log(btn)
+			const sCateName = btn.dataset.name;
+			tCateTitle.innerHTML = `3차 카테고리 (${sCateName})  [<span class="create">추가</span>, <span class="update">수정</span>, <span class="delete">삭제</span>]`;
 		});
 	});
 }
