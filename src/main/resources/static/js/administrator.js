@@ -176,23 +176,17 @@ function setCategoryContentHTML(menuName){
 			</section>
 			<section class="admin-content category">
 				<section>
-					<section class="f-cate-title">
-						1차 카테고리 [<span class="create">추가</span>] [<span class="update">수정</span>] [<span class="delete">삭제</span>]
-					</section>
+					<section class="f-cate-title"></section>
 					<section class="category_first">
 					</section>
 				</section>
 				<section>
-					<section class="s-cate-title">
-						2차 카테고리
-					</section>
+					<section class="s-cate-title"></section>
 					<section class="category_second">
 					</section>
 				</section>
 				<section>
-					<section class="t-cate-title">
-						3차 카테고리
-					</section>
+					<section class="t-cate-title"></section>
 					<section class="category_third">
 					</section>
 				</section>
